@@ -1,0 +1,10 @@
+name: mri
+channels:
+ - defaults
+dependencies:
+ - pip
+ - pip:
+  - pydicom
+  - opencv-contrib-python
+  - numpy
+  - matplotlib
