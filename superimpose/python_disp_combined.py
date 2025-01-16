@@ -34,8 +34,8 @@ if __name__ == '__main__':
     mid_slice_img_data *= 255/np.max(mid_slice_img_data)
     alpha = 2.0  # Contrast control (1.0 = original, >1.0 = higher contrast)
     beta = 0  # Brightness control (optional)
-    mid_slice_img_data = np.clip(alpha * mid_slice_img_data + beta, 0, 255)
     mid_slice_img_data = sharpen(mid_slice_img_data)
+    mid_slice_img_data = np.clip(alpha * mid_slice_img_data + beta, 0, 255)
     plt.imsave(r"C:\Users\awong\Downloads\mri_scan_head.png", np.flip(mid_slice_img_data, axis=0), cmap='gray')
     # Display the MRI image
     # plt.imshow(mid_slice_img_data, extent=(1, newMRIC[0]*newscale_mri[0], 1, newMRIC[1]*newscale_mri[1]), aspect='auto')
@@ -54,7 +54,6 @@ if __name__ == '__main__':
     mid_slice_img_data[row:row+H, col:col+W] += rotated
     mid_slice_img_data = np.clip(mid_slice_img_data, 0, 255)
     # Display the superimposed image
-    print(np.min(mid_slice_img_data))
     plt.imshow(mid_slice_img_data, extent=(1, newMRIC[0]*newscale_mri[0], 1, newMRIC[1]*newscale_mri[1]), aspect='auto')
     plt.colorbar()
     plt.title('MRI Mid-Slice Image')
