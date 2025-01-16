@@ -45,3 +45,13 @@ def rotate_image(image, angle):
     rotated_image = cv2.warpPerspective(image, rotation_matrix_h, (new_width, new_height))
     
     return rotated_image
+
+def sharpen(img: np.ndarray):
+    kernel = np.ones((3,3))*-1
+    kernel[1,1] = 9
+    padded_img = np.pad(img, pad_width=1)
+    output = np.zeros_like(img)
+    for i in range(output.shape[0]):
+        for j in range(output.shape[1]):
+            output[i,j] = np.sum(padded_img[i:i+3,j:j+3] * kernel)
+    return output
