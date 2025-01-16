@@ -18,3 +18,30 @@ def smooth(img_data: np.ndarray, args: dict) -> np.ndarray:
         img_data = img_data.astype(np.float64)
         return img_data
 
+def rotate_image(image, angle):
+    # Get the dimensions of the image
+    height, width = image.shape
+    
+    # Calculate the center of the image
+    center = (width / 2, height / 2)
+    
+    # Compute the rotation matrix
+    rotation_matrix = cv2.getRotationMatrix2D(center, -angle, scale=1.0)
+    
+    # Expand the rotation matrix to 3x3 to use with warpPerspective
+    rotation_matrix_h = np.vstack([rotation_matrix, [0, 0, 1]])
+    
+    # Calculate the bounding box of the rotated image
+    cos_theta = abs(rotation_matrix[0, 0])
+    sin_theta = abs(rotation_matrix[0, 1])
+    new_width = int((height * sin_theta) + (width * cos_theta))
+    new_height = int((height * cos_theta) + (width * sin_theta))
+    
+    # Adjust the rotation matrix to include the translation for new center
+    rotation_matrix_h[0, 2] += (new_width / 2) - center[0]
+    rotation_matrix_h[1, 2] += (new_height / 2) - center[1]
+    
+    # Apply the warp perspective
+    rotated_image = cv2.warpPerspective(image, rotation_matrix_h, (new_width, new_height))
+    
+    return rotated_image
