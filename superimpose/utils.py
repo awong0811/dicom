@@ -55,3 +55,22 @@ def sharpen(img: np.ndarray):
         for j in range(output.shape[1]):
             output[i,j] = np.sum(padded_img[i:i+3,j:j+3] * kernel)
     return output
+
+def crop(img: np.ndarray):
+    for i in range(img.shape[0]):
+        if not np.all(img[i]==0):
+            img = img[i:]
+            break
+    for j in range(img.shape[0]-1, -1, -1):
+        if not np.all(img[j]==0):
+            img = img[:j+1]
+            break
+    for k in range(img.shape[1]):
+        if not np.all(img[:,k]==0):
+            img = img[:,k:]
+            break
+    for l in range(img.shape[1]-1, -1, -1):
+        if not np.all(img[:,l]==0):
+            img = img[:,:l+1]
+            break
+    return img
